@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
-
 
 //    private String[] names;
 //    private String[] country;
@@ -23,15 +21,20 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
 
     // Now we're using ArrayLists instead of arrays of strings
     // which are commented out above
-    private ArrayList<String> names;
-    private ArrayList<String> countries;
+//    private ArrayList<String> names;
+//    private ArrayList<String> countries;
+//
+//    public LeahsAdapter(ArrayList<String> names, ArrayList<String> countries) {
+//        this.names = names;
+//        this.countries = countries;
+//    }
 
-    public LeahsAdapter(ArrayList<String> names, ArrayList<String> countries) {
-        this.names = names;
-        this.countries = countries;
+
+    private ArrayList<Fruit> fruits;
+
+    public LeahsAdapter(ArrayList<Fruit> fruits) {
+        this.fruits = fruits;
     }
-
-
 
     @NonNull
     @Override
@@ -55,8 +58,12 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
 
         // Accessing elements at index is done differently on ArrayLists
         // We do not use the square brackets, instead - we use get(int i)
-        tamarsViewHolder.header.setText(names.get(i));
-        tamarsViewHolder.subHeader.setText(countries.get(i));
+
+        Fruit runningFruit = this.fruits.get(i);
+
+
+        tamarsViewHolder.header.setText(runningFruit.getNameOfFruit());
+        tamarsViewHolder.subHeader.setText(runningFruit.isDelicious() + "");
 
         tamarsViewHolder.numberTextView.setText(i + "");
 
@@ -65,6 +72,6 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
 
     @Override
     public int getItemCount() {
-        return names.size();
+        return fruits.size();
     }
 }

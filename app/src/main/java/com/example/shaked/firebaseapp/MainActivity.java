@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,27 +16,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth auth;
-
+    private FirebaseDatabase database;
 
     private RecyclerView recyclerView;
 
-    public String[] names = {"James", "Ben", "Leah", "Jay", "Kayanna", "Tamar", "Jacob", "Sivan"
-            , "Jared", "Dylan", "Jonathan", "Jethro", "Geffen"};
-    public String[] country = {"UK", "Canada", "Miami", "Australia", "Texas", "New-York", "Miami", "Yavne"
-            , "Chicago", "Georgia", "Queens", "South Africa", "San Francisco"};
+    private ArrayList<Fruit> jamesFavoriteFruits; // = null by default
 
-
-    private ArrayList<String> namesArrayList;
-    private ArrayList<String> countriesArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        // initialized the array list
+        jamesFavoriteFruits = new ArrayList<>(); // do not forget this line
 
         findViewById(R.id.addButton).setOnClickListener(this);
-
-        // shortcut for converting arrays to ArrayLists
-        namesArrayList = new ArrayList<>(Arrays.asList(names));
-        countriesArrayList = new ArrayList<>(Arrays.asList(country));
-
 
 
         // get recycler view
@@ -62,12 +59,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the layout manager of the recycler view
         recyclerView.setLayoutManager(llm);
 
-        // set an adapter
 
-        // Create an object of the adapter we created
-        LeahsAdapter leahsAdapter = new LeahsAdapter(this.namesArrayList, this.countriesArrayList);
-        // Set the adapter of the recycler view to be leah's
-        recyclerView.setAdapter(leahsAdapter);
+        // for now, recycler view's adapter is initialized
+        // with an empty list of fruits
+        LeahsAdapter adapter = new LeahsAdapter(jamesFavoriteFruits);
+        recyclerView.setAdapter(adapter);
+
+
+        // Set the database observer
+        DatabaseReference dbRef = database.getReference("/Fruits");
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                jamesFavoriteFruits.clear();
+                for (DataSnapshot childSnap : dataSnapshot.getChildren()){
+
+                    // Get data from the snapshot
+                    String nameOfFruit = childSnap.child("nameOfFruit").getValue(String.class);
+                    boolean isDelicious = childSnap.child("delicious").getValue(Boolean.class);
+
+                    // Construct a new fruit
+                    Fruit newFruitFromFirebase = new Fruit(nameOfFruit, isDelicious);
+
+                    // Add the fruit to the ArrayList
+                    jamesFavoriteFruits.add(newFruitFromFirebase);
+
+                }
+                // after done adding everything to the list
+                // notify the adapter of the recycler view
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
 
     }
@@ -78,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Strings from EditTexts:
         EditText nameEditText = findViewById(R.id.nameEditText);
-        String nameString = nameEditText.getText().toString();
+        String nameOfFruit = nameEditText.getText().toString();
 
         EditText countryEditText = findViewById(R.id.countryEditText);
         String countryString = countryEditText.getText().toString();
@@ -87,22 +117,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nameEditText.setText("");
         countryEditText.setText("");
 
-
-        // Add the strings to the array lists
-        this.namesArrayList.add(nameString);
-        this.countriesArrayList.add(countryString);
-
-//        // Re-create the Adapter (not efficient, will be removed in the future)
-//        LeahsAdapter adapter = new LeahsAdapter(this.namesArrayList, this.countriesArrayList);
-//
-//        // Set the RecyclerView's adapter again to the new one
-//        this.recyclerView.setAdapter(adapter);
-
-        // Better way to update the view
-        recyclerView.getAdapter().notifyDataSetChanged();
+        DatabaseReference newFruitChild = database.getReference("/Fruits").push();
+        Fruit newFruit = new Fruit(nameOfFruit, true);
 
 
-        Toast.makeText(this, "New Item Added!", Toast.LENGTH_SHORT).show();
+        newFruitChild.setValue(newFruit);
+
+
+
+
+
 
     }
 }
