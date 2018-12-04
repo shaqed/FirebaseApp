@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1054291230673",
+    "firebase_url": "https://sample-books-2e51e.firebaseio.com",
+    "project_id": "sample-books-2e51e",
+    "storage_bucket": "sample-books-2e51e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054291230673:android:7933272ec67758a0",
+        "android_client_info": {
+          "package_name": "com.example.shaked.firebaseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054291230673-17s297ll9hjjm0pf776cn4m1dau8u9bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpZ5usqDzcUx2fQ9-YIwreL69qvyP9_ks"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
