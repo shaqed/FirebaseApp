@@ -35,6 +35,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Fruit> jamesFavoriteFruits; // = null by default
 
 
+    private void login(String email, String password) {
+        auth = FirebaseAuth.getInstance(); // this is like firebase.auth()
+
+        // After sending the request, we get back a Task<AuthResult> object
+        // we will use the task variable to set a function that
+        // will trigger when the request is complete
+        Task<AuthResult> task = auth.signInWithEmailAndPassword(email, password);
+
+
+        // this is equivalent to
+        // auth.signInWithEmailAndPassword(email,password).then(function(res) {
+        // });
+        task.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                // To check if the task is successful
+                // we use the task.isSuccessful function
+                boolean isSuccessful = task.isSuccessful();
+
+                if (isSuccessful == true) {
+                    Log.e("ABC", "Logged in successfuly");
+                } else {
+                    Log.e("ABC", "Login failed");
+                    // Information why our task failed can be found from the Exception object
+                    Exception exception = task.getException();
+
+                    String errorCause = exception.getMessage();
+                    // print errorCause
+                }
+            }
+        });
+
+        // NOTE: Here again,
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
