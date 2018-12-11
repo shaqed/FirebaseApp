@@ -38,9 +38,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void login(String email, String password) {
         auth = FirebaseAuth.getInstance(); // this is like firebase.auth()
 
+
         // After sending the request, we get back a Task<AuthResult> object
         // we will use the task variable to set a function that
         // will trigger when the request is complete
+        // this is equivalent to the then() method from JavaScript
         Task<AuthResult> task = auth.signInWithEmailAndPassword(email, password);
 
 
@@ -51,11 +53,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // To check if the task is successful
-                // we use the task.isSuccessful function
+                // we use the task.isSuccessful() function
                 boolean isSuccessful = task.isSuccessful();
 
                 if (isSuccessful == true) {
-                    Log.e("ABC", "Logged in successfuly");
+                    Log.e("ABC", "Logged in successfully");
                 } else {
                     Log.e("ABC", "Login failed");
                     // Information why our task failed can be found from the Exception object
@@ -67,7 +69,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // NOTE: Here again,
+        // NOTE: Here again, our login() method does not wait for the request
+        // to be complete.
+        // so the login() function does not return true / false
+        // you will need to define some behavior that will run when the request
+        // will be complete to decide what to do
+    }
+
+
+    public void register(String email, String password) {
+        // the register process is almost identical to the login()
+
+        // Get the auth object
+        auth = FirebaseAuth.getInstance();
+
+        // Call the function and get back a Task
+        Task<AuthResult> retTask = auth.createUserWithEmailAndPassword(email, password);
+
+        // Set an onCompleteListener
+        retTask.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // successful register
+                } else {
+                    // unsuccessful register
+                    String errorCause = task.getException().getMessage();
+
+
+                }
+            }
+        });
+
+
     }
 
     @Override
