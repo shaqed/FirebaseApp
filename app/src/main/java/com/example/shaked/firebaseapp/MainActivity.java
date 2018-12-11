@@ -1,5 +1,6 @@
 package com.example.shaked.firebaseapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startActivity(new Intent(this, SecondActivity.class));
+
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -146,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     // Get data from the snapshot
                     String nameOfFruit = childSnap.child("nameOfFruit").getValue(String.class);
-                    boolean isDelicious = childSnap.child("delicious").getValue(Boolean.class);
-
+//                    boolean isDelicious = childSnap.child("delicious").getValue(Boolean.class);
+                    boolean isDelicious = true;
                     // Construct a new fruit
                     Fruit newFruitFromFirebase = new Fruit(nameOfFruit, isDelicious);
 

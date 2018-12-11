@@ -3,6 +3,7 @@ package com.example.shaked.firebaseapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +60,20 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
         // Accessing elements at index is done differently on ArrayLists
         // We do not use the square brackets, instead - we use get(int i)
 
-        Fruit runningFruit = this.fruits.get(i);
+        final Fruit runningFruit = this.fruits.get(i);
 
 
         tamarsViewHolder.header.setText(runningFruit.getNameOfFruit());
         tamarsViewHolder.subHeader.setText(runningFruit.isDelicious() + "");
 
         tamarsViewHolder.numberTextView.setText(i + "");
+
+        tamarsViewHolder.header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("ABC", "Clicked on: "+ runningFruit.getNameOfFruit());
+            }
+        });
 
 
     }
