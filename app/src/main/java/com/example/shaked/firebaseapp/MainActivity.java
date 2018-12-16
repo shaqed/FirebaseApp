@@ -1,5 +1,6 @@
 package com.example.shaked.firebaseapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -134,16 +135,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // for now, recycler view's adapter is initialized
         // with an empty list of fruits
-        LeahsAdapter adapter = new LeahsAdapter(jamesFavoriteFruits);
+        LeahsAdapter adapter = new LeahsAdapter(jamesFavoriteFruits,this);
         recyclerView.setAdapter(adapter);
 
 
         // Set the database observer
         DatabaseReference dbRef = database.getReference("/Fruits");
 
+//        Context t = this.getcontext;
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // get context where "this" wouldn't work
+                Context c = getBaseContext();
+
                 jamesFavoriteFruits.clear();
                 for (DataSnapshot childSnap : dataSnapshot.getChildren()){
 
@@ -171,6 +177,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
+        foo(this);
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    public void foo(Context context) {
 
     }
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,9 +33,11 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
 
 
     private ArrayList<Fruit> fruits;
+    private Context context;
 
-    public LeahsAdapter(ArrayList<Fruit> fruits) {
+    public LeahsAdapter(ArrayList<Fruit> fruits, Context context) {
         this.fruits = fruits;
+        this.context = context;
     }
 
     @NonNull
@@ -71,9 +74,14 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
         tamarsViewHolder.header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("ABC", "Clicked on: "+ runningFruit.getNameOfFruit());
+
+                // getting a context can easilt be done with v.getContext()
+
+//                Log.e("AAA", "Hello you clicked on : " + runningFruit.getNameOfFruit());
+                Toast.makeText(context, runningFruit.getNameOfFruit(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
     }
