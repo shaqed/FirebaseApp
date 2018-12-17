@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, SecondActivity.class));
+//        startActivity(new Intent(this, SecondActivity.class));
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -142,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the database observer
         DatabaseReference dbRef = database.getReference("/Fruits");
 
-//        Context t = this.getcontext;
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -154,11 +154,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (DataSnapshot childSnap : dataSnapshot.getChildren()){
 
                     // Get data from the snapshot
+
+                    String uniqueKey = childSnap.getKey();
                     String nameOfFruit = childSnap.child("nameOfFruit").getValue(String.class);
-//                    boolean isDelicious = childSnap.child("delicious").getValue(Boolean.class);
-                    boolean isDelicious = true;
+                    boolean isDelicious = childSnap.child("delicious").getValue(Boolean.class);
                     // Construct a new fruit
-                    Fruit newFruitFromFirebase = new Fruit(nameOfFruit, isDelicious);
+                    Fruit newFruitFromFirebase = new Fruit(nameOfFruit, isDelicious, uniqueKey);
 
                     // Add the fruit to the ArrayList
                     jamesFavoriteFruits.add(newFruitFromFirebase);
@@ -176,17 +177,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
-
-        foo(this);
         Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
     }
 
 
-
-    public void foo(Context context) {
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -196,15 +190,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText nameEditText = findViewById(R.id.nameEditText);
         String nameOfFruit = nameEditText.getText().toString();
 
-        EditText countryEditText = findViewById(R.id.countryEditText);
-        String countryString = countryEditText.getText().toString();
 
+        CheckBox checkBox = findViewById(R.id.fruitCheckbox);
+        boolean isDelicious = checkBox.isChecked();
 
         nameEditText.setText("");
-        countryEditText.setText("");
+        checkBox.setChecked(false);
 
         DatabaseReference newFruitChild = database.getReference("/Fruits").push();
-        Fruit newFruit = new Fruit(nameOfFruit, true);
+        Fruit newFruit = new Fruit(nameOfFruit, isDelicious, null);
 
 
         newFruitChild.setValue(newFruit);

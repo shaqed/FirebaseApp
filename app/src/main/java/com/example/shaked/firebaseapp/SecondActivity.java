@@ -14,18 +14,18 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        ArrayList<Fruit> fruits = new ArrayList<>();
-        fruits.add(new Fruit("Orange", true));
-        fruits.add(new Fruit("Banana", true));
-        fruits.add(new Fruit("Guava", false));
-
-
-        RecyclerView recyclerView = findViewById(R.id.secondRecycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        LeahsAdapter newAdapter = new LeahsAdapter(fruits);
-
-        recyclerView.setAdapter(newAdapter);
+//        ArrayList<Fruit> fruits = new ArrayList<>();
+//        fruits.add(new Fruit("Orange", true));
+//        fruits.add(new Fruit("Banana", true));
+//        fruits.add(new Fruit("Guava", false));
+//
+//
+//        RecyclerView recyclerView = findViewById(R.id.secondRecycler);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        LeahsAdapter newAdapter = new LeahsAdapter(fruits,this);
+//
+//        recyclerView.setAdapter(newAdapter);
 
     }
 }

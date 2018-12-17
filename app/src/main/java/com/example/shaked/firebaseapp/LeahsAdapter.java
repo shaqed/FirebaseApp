@@ -7,7 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -55,7 +59,7 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TamarsViewHolder tamarsViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final TamarsViewHolder tamarsViewHolder, int i) {
 //        tamarsViewHolder.header.setText(names[i]);
 //        tamarsViewHolder.subHeader.setText(country[i]);
 
@@ -65,22 +69,45 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
 
         final Fruit runningFruit = this.fruits.get(i);
 
+//        runningFruit.
+
 
         tamarsViewHolder.header.setText(runningFruit.getNameOfFruit());
         tamarsViewHolder.subHeader.setText(runningFruit.isDelicious() + "");
 
-        tamarsViewHolder.numberTextView.setText(i + "");
+        tamarsViewHolder.checkBox.setChecked(runningFruit.isDelicious());
+
+
+
 
         tamarsViewHolder.header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // getting a context can easilt be done with v.getContext()
+                // getting a context can easily be done with v.getContext()
 
 //                Log.e("AAA", "Hello you clicked on : " + runningFruit.getNameOfFruit());
                 Toast.makeText(context, runningFruit.getNameOfFruit(), Toast.LENGTH_SHORT).show();
+
+
+                updateFruit(runningFruit.getUniqueKey(), tamarsViewHolder.checkBox.isChecked());
+
+
             }
         });
+
+
+
+    }
+
+    private void updateFruit(String uniqueKey, boolean isDelicious) {
+
+        // firebase.db()
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+        DatabaseReference reference = db.getReference("/Fruits/" + uniqueKey + "/delicious");
+
+        reference.setValue(isDelicious);
 
 
 

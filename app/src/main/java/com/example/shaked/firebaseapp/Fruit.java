@@ -6,14 +6,16 @@ public class Fruit {
     // make sure that these fields are the same as they are in Firebase
     private String nameOfFruit;
     private boolean delicious;
+    private String uniqueKey;
 
     // Empty constructor because Firebase needs this
     public Fruit() {
     }
 
-    public Fruit(String name, boolean isDelicious) {
+    public Fruit(String name, boolean isDelicious, String uniqueKey) {
         this.nameOfFruit = name;
         this.delicious = isDelicious;
+        this.uniqueKey = uniqueKey;
     }
 
     public String getNameOfFruit() {
@@ -22,5 +24,9 @@ public class Fruit {
 
     public boolean isDelicious() {
         return delicious;
+    }
+
+    public String getUniqueKey() {
+        return uniqueKey;
     }
 }
