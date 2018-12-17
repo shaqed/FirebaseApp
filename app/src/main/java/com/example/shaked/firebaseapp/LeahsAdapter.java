@@ -75,9 +75,19 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
         tamarsViewHolder.header.setText(runningFruit.getNameOfFruit());
         tamarsViewHolder.subHeader.setText(runningFruit.isDelicious() + "");
 
+
+        tamarsViewHolder.checkBox.setOnCheckedChangeListener(null); // remove the check change
         tamarsViewHolder.checkBox.setChecked(runningFruit.isDelicious());
 
+        tamarsViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.e("ABC", "checked: " + runningFruit.getUniqueKey() + " ischecked: " + isChecked);
 
+
+                updateFruit(runningFruit.getUniqueKey(), isChecked);
+            }
+        });
 
 
         tamarsViewHolder.header.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +100,7 @@ public class LeahsAdapter extends RecyclerView.Adapter<TamarsViewHolder> {
                 Toast.makeText(context, runningFruit.getNameOfFruit(), Toast.LENGTH_SHORT).show();
 
 
-                updateFruit(runningFruit.getUniqueKey(), tamarsViewHolder.checkBox.isChecked());
+//                updateFruit(runningFruit.getUniqueKey(), tamarsViewHolder.checkBox.isChecked());
 
 
             }

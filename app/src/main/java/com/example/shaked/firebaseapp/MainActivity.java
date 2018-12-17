@@ -201,7 +201,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fruit newFruit = new Fruit(nameOfFruit, isDelicious, null);
 
 
-        newFruitChild.setValue(newFruit);
+        newFruitChild.setValue(newFruit).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                recyclerView.getLayoutManager().scrollToPosition(jamesFavoriteFruits.size() - 1);
+            }
+        });
 
 
 
